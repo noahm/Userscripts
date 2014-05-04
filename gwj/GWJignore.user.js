@@ -9,6 +9,11 @@
 // @author       Chris Doggett, Noah Manneschmidt
 // ==/UserScript==
 
+/**
+ * Usage:
+ * Adds an ignore or unignore link at the bottom of every post.
+ */
+
 // quick 'n dirty localStorage wrapper with JSON serialization
 var store = {
 	set: function(key, val) {

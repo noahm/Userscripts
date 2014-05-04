@@ -10,6 +10,14 @@
 // @author       Noah Manneschmidt
 // ==/UserScript==
 
+/**
+ * Usage:
+ * Adds a link in the top left on any tracker or fourm page to show ignore controls.
+ * When ignore controls are shown, an ignore link will appear next to any thread, and
+ * currently ignored threads will appear with an unignore link.
+ * The listing of favorite threads is not affected.
+ */
+
 // quick 'n dirty localStorage wrapper with JSON serialization
 var store = {
 	set: function(key, val) {
