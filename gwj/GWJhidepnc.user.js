@@ -13,15 +13,14 @@
 // Originally found here: http://userscripts.org/scripts/review/81262
 // Updated to work with chrome directly and on the tracker pages
 
-var trs = document.getElementsByTagName("tr");
-for (i = 0; i < trs.length; i++)
-{
-	var tr_contents = (trs[i].innerHTML);
-	
-	var the_thingy = tr_contents.match("Politics and Controversy");
+var rows = document.getElementsByTagName("tr"), removeList = [], row;
 
-	if (the_thingy != null)
-	{
-		trs[i].parentNode.removeChild(trs[i]);
+for (i = 0; i < rows.length; i++) {
+	if (rows[i].innerHTML.match("Politics and Controversy")) {
+		removeList.push(rows[i]);
 	}
+}
+
+while (row = removeList.pop()) {
+	row.parentNode.removeChild(row);
 }
