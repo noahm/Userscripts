@@ -2,7 +2,7 @@
 // @namespace    gamerswithjobs
 // @name         I Didn't Hear Anything
 // @description  Increases the number of potential Tannhauserings
-// @version      1.3
+// @version      1.3.1
 // @match        http://www.gamerswithjobs.com/node/*
 // @grant        none
 // @run-at       document-end
@@ -119,7 +119,7 @@ function hideUserContent(name) {
 	});
 
 	// hide quotes
-	forEach($$("span.bb-quote-user"), function(el) {
+	forEach($$("div.content span.bb-quote-user"), function(el) {
 		if (!el.textContent.match(name)) return; // match operates like .startsWith()
 		var quote = el.nextSibling,
 			hideBlock = unhideQuoteEl.cloneNode(true);
