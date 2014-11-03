@@ -70,22 +70,23 @@ function $$ (selector, el) {
 
 // from http://userscripts.org/guides/46
 function forEach(lst, cb) {
+	var i;
 	if(!lst)
 		return;
-	if (lst.snapshotItem)
-		for (var i = 0, len = lst.snapshotLength,
-				 snp = lst.snapshotItem; i < len; ++i)
+	if (lst.snapshotItem) {
+		for (i = 0, len = lst.snapshotLength, snp = lst.snapshotItem; i < len; ++i)
 			cb(snp(i), i, lst);
-	else if (lst.iterateNext) {
+	} else if (lst.iterateNext) {
 		var item, next = lst.iterateNext;
 		while (item = next())
 			cb(item, lst);
-	} else if (typeof lst.length != 'undefined')
-		for (var i = 0, len = lst.length; i < len; ++i)
+	} else if (typeof lst.length != 'undefined') {
+		for (i = 0, len = lst.length; i < len; ++i)
 			cb(lst[i], i, lst);
-	else if (typeof lst == "object")
-		for (var i in lst)
+	} else if (typeof lst == "object") {
+		for (i in lst)
 			cb(lst[i], i, lst);
+	}
 }
 
 function unhide() {
