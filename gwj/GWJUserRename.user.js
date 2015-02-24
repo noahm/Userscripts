@@ -40,7 +40,7 @@
 				break;
 		}
 	}
-	
+
 	function handleText(textNode) {
 		var v = textNode.nodeValue, i;
 
