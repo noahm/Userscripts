@@ -2,7 +2,7 @@
 // @namespace    gamerswithjobs
 // @name         I Didn't Hear Anything
 // @description  Increases the number of potential Tannhauserings
-// @version      1.4
+// @version      1.4.1
 // @match        http://www.gamerswithjobs.com/node/*
 // @grant        none
 // @author       Chris Doggett, Noah Manneschmidt
