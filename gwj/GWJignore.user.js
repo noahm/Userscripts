@@ -13,7 +13,9 @@
  * Usage:
  * Adds an ignore or unignore link at the bottom of every post. Click to add/remove the post's author to your ignore list.
  */
+(function(){
 
+'use strict';
 // quick 'n dirty localStorage wrapper with JSON serialization
 var store = {
 	set: function(key, val) {
@@ -126,6 +128,9 @@ function forEach(lst, cb) {
  */
 function hide(element, placeholder) {
 	var unhideLink = $('a', placeholder);
+	if (typeof element == 'undefined') {
+		return;
+	}
 	if (unhideLink) {
 		unhideLink.addEventListener('click', unhide);
 	}
@@ -239,3 +244,5 @@ if (document.readyState === 'loading') {
 } else {
 	goTime();
 }
+
+})();
