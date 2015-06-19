@@ -4,8 +4,10 @@
 // @author      Noah Manneschmidt
 // @namespace   gamerswithjobs
 // @include     http://www.gamerswithjobs.com/*
-// @version     1
+// @version     1.1
 // @grant       none
 // ==/UserScript==
 
-document.onkeydown = function(){};
+setTimeout(function() {
+	jQuery('.markItUpEditor').unbind('keydown.markItUp');
+}, 5000);
