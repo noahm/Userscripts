@@ -9,12 +9,12 @@ See also: https://github.com/noahm/dark-gwj (Userstyle for use with [Stylish](ht
 All tested and working with the new site design:
 
 * `GWJUserRename.user.js` - Make a user on the forums appear to have a different username, just for fun.
-* `GWJhidepnc.user.js` - Hide all P&C threads
 * `GWJignore.user.js` - Put users on your ignore list to keep their posts from displaying
 
 Not yet updated for the new site design:
 
 * `GWJthreadignore.user.js` - Put a thread on your ignore list to keep it appearing in topic lists
+* `GWJhidepnc.user.js` - Hide all P&C threads (partially functional, might not be updatable)
 
 Unnecessary with the new site design:
 
