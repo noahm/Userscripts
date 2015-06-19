@@ -2,7 +2,7 @@
 // @namespace    gamerswithjobs
 // @name         I Didn't Hear Anything
 // @description  Increases the number of potential Tannhauserings
-// @version      1.4.1
+// @version      1.5
 // @match        http://www.gamerswithjobs.com/node/*
 // @grant        none
 // @author       Chris Doggett, Noah Manneschmidt
@@ -154,10 +154,6 @@ var vaporizedCommentEl = document.createElement('div');
 vaporizedCommentEl.className = 'links ignore-placeholder';
 vaporizedCommentEl.innerHTML = 'This post quoted <span class="username"></span> and has been summarily vaporized.';
 
-// insert a brief stylesheet for our created elements
-var style = document.createElement('style');
-style.innerHTML = '.ignore-placeholder { font-weight: bold; } div.ignore-placeholder { margin: 1em; }';
-
 // hides all content on the page for a given username
 function hideUserContent(name) {
 	var placeholder, comment;
@@ -167,15 +163,15 @@ function hideUserContent(name) {
 		if (el.textContent !== name) return;
 		placeholder = unhideCommentEl.cloneNode(true);
 		$('.username', placeholder).textContent = name;
-		hide(firstParentMatching(el, 'comment'), placeholder);
+		hide(firstParentMatching(el, 'forum-post'), placeholder);
 	});
 
 	if (ignoreList.vaporized(name)) {
 		// hide quotes
-		forEach($$("div.content span.bb-quote-user"), function(el) {
+		forEach($$("div.content div.quote-username"), function(el) {
 			if (!el.textContent.match(name)) return; // match operates like .startsWith()
 			// hide parent post if not written by the vaporized user
-			comment = firstParentMatching(el, 'comment');
+			comment = firstParentMatching(el, 'forum-post');
 			if ($('div.author-name a', comment).text !== name) {
 				placeholder = vaporizedCommentEl.cloneNode(true);
 				$('.username', placeholder).textContent = name;
@@ -184,7 +180,7 @@ function hideUserContent(name) {
 		});
 	} else {
 		// just hide the quotes
-		forEach($$("div.content span.bb-quote-user"), function(el) {
+		forEach($$("div.content div.quote-username"), function(el) {
 			if (!el.textContent.match(name)) return; // match operates like .startsWith()
 			hide(el.nextSibling, unhideQuoteEl.cloneNode(true));
 		});
@@ -193,7 +189,7 @@ function hideUserContent(name) {
 
 // create controls for ignoring and unignoring on this page
 function toggleUserIgnore() {
-	var username = firstParentMatching(this, 'comment').querySelector('div.author-name a').text;
+	var username = firstParentMatching(this, 'forum-post').querySelector('div.author-name a').text;
 	if (ignoreList.contains(username)) {
 		ignoreList.remove(username);
 		this.parentElement.parentElement.removeChild(this.parentElement);
@@ -210,19 +206,31 @@ function toggleUserIgnore() {
 }
 
 var ignorePosterItem = document.createElement('li');
+ignorePosterItem.classList.add('post-ignore');
 ignorePosterItem.innerHTML = '<a href="javascript:void(0);"></a>';
+
+// insert a brief stylesheet for our created elements
+var style = document.createElement('style');
+style.innerHTML = '\
+.ignore-placeholder { font-weight: bold; } \
+div.ignore-placeholder { margin: 1em; } \
+.forum-post .footer .post-actions ul li.post-ignore a { \
+width: 16px; height: 16px; \
+background-position: center center; background-repeat: no-repeat; \
+background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABd0lEQVQ4jaWSMUtcURCFD2KRyjogsqu+OyOEEETenem2jP6FBUFR/4G7lQGbmCJYWKmgv2Wx2LC5M1Za2dkolnZi8yzeZnn70Bg2A7c7353DmQNMMAPJZlzD3iRsCQsNXGjwX/BAspk3hf3l+YbH0LbIXYuh4zG0U559ehdOedYyoQtXLl59b8H7wJRFOqyIL5OEXRf2OpxyXnXhn/vA1OgDEz535cKETk34/tcXmgUAX6GlKuwaxIWPSi2fl7aVdoaiAwBw4WdfWfhcD8yU1kzosdTQgSsXSWkHLnzjwnc9YBoATPnKlR5M6LoKu9KTKV8BQA+YNuF7F74ZOTCl7wCQJGxWbf+By41hY+jghysXHmm7lgGfVG2nnFdd6cmFn134W6/Z/GBCp8OFZ+NXUD4eT7v50YTWLfLW75h9tRg6rnzryoVFOhy7Qj2w0eZaD0zoIuVZ6916pnxxrmxi6FjkrsfQ7i/PN15t3z91+2/jGvYmhgG8AGJ1AV5Z7OaYAAAAAElFTkSuQmCC\'); \
+}';
 
 // inserts the ignore/unignore link into a ul.links element
 function addIgnoreLink(el) {
 	var listItem = ignorePosterItem.cloneNode(true);
-	el.appendChild(listItem);
+	el.insertBefore(listItem, el.lastElementChild);
 	var link = $('a', listItem);
-	var username = el.parentElement.parentElement.querySelector('div.author-name a').text;
+	var username = firstParentMatching(el, 'forum-post').querySelector('div.author-name a');
 	link.addEventListener('click', toggleUserIgnore);
-	if (ignoreList.contains(username)) {
-		link.innerHTML = 'unignore';
+	if (username && ignoreList.contains(username.text)) {
+		link.title = link.text = 'Unignore this author';
 	} else {
-		link.innerHTML = 'ignore';
+		link.title = link.text = 'Ignore this author';
 	}
 }
 
@@ -236,7 +244,7 @@ function goTime() {
 	forEach(ignoreList.members, hideUserContent);
 
 	// add ignore buttons to all posts
-	forEach($$('div.comment ul.links'), addIgnoreLink);
+	forEach($$('.forum-post .footer .post-actions ul'), addIgnoreLink);
 }
 
 if (document.readyState === 'loading') {
