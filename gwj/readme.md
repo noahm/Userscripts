@@ -2,7 +2,7 @@
 
 A collection of scripts for enhancing the forum experience on [GamersWithJobs.com](http://www.gamerswithjobs.com/) written by me (Cathadan) and others as credited in each file.
 
-See also: https://github.com/noahm/dark-gwj (Userstyle for use with [Stylish](https://userstyles.org/))
+See also: https://github.com/noahm/dark-gwj (dark theme for use with [Stylish](https://userstyles.org/))
 
 ## Scripts
 
