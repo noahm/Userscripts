@@ -2,9 +2,9 @@
 // @name GWJ User Rename
 // @namespace gamerswithjobs
 // @description Rename users on the gamers with jobs forums. Your alt names may get quoted into replies. Use at your own risk.
-// @match http://www.gamerswithjobs.com/tracker*
-// @match http://www.gamerswithjobs.com/forum/*
-// @match http://www.gamerswithjobs.com/node/*
+// @match https://www.gamerswithjobs.com/tracker*
+// @match https://www.gamerswithjobs.com/forum/*
+// @match https://www.gamerswithjobs.com/node/*
 // @version 1.0
 // @grant none
 // @updateURL https://github.com/noahm/Userscripts/raw/master/gwj/GWJUserRename.user.js

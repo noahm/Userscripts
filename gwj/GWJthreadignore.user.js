@@ -3,8 +3,8 @@
 // @name         GWJ Thread Ignore
 // @description  Allows you to ignore individual threads
 // @version      1.0
-// @match        http://www.gamerswithjobs.com/tracker*
-// @match        http://www.gamerswithjobs.com/forum/*
+// @match        https://www.gamerswithjobs.com/tracker*
+// @match        https://www.gamerswithjobs.com/forum/*
 // @grant        none
 // @run-at       document-end
 // @author       Noah Manneschmidt

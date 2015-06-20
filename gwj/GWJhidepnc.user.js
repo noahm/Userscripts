@@ -4,8 +4,8 @@
 // @description     Hides Politics & Controversy forums from gamerswithjobs.com
 // @version         1.1
 // @author          Anodyne, Noah Manneschmidt
-// @match           http://www.gamerswithjobs.com/tracker*
-// @match           http://www.gamerswithjobs.com/forum/*
+// @match           https://www.gamerswithjobs.com/tracker*
+// @match           https://www.gamerswithjobs.com/forum/*
 // @grant           none
 // @run-at          document-end
 // ==/UserScript==

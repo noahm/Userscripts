@@ -3,7 +3,7 @@
 // @name         I Didn't Hear Anything
 // @description  Increases the number of potential Tannhauserings
 // @version      1.5
-// @match        http://www.gamerswithjobs.com/node/*
+// @match        https://www.gamerswithjobs.com/node/*
 // @grant        none
 // @author       Chris Doggett, Noah Manneschmidt
 // @updateURL    https://github.com/noahm/Userscripts/raw/master/gwj/GWJignore.user.js

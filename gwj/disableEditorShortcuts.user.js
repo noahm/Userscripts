@@ -3,7 +3,7 @@
 // @description Avoids frustration while composing a post
 // @author      Noah Manneschmidt
 // @namespace   gamerswithjobs
-// @include     http://www.gamerswithjobs.com/*
+// @include     https://www.gamerswithjobs.com/*
 // @version     1.1
 // @grant       none
 // ==/UserScript==
