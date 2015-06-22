@@ -6,6 +6,7 @@
 // @include     https://www.gamerswithjobs.com/*
 // @version     1.1
 // @grant       none
+// @updateURL   https://github.com/noahm/Userscripts/raw/master/gwj/disableEditorShortcuts.user.js
 // ==/UserScript==
 
 setTimeout(function() {
