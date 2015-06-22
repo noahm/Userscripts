@@ -2,7 +2,7 @@
 // @namespace    gamerswithjobs
 // @name         I Didn't Hear Anything
 // @description  Increases the number of potential Tannhauserings
-// @version      1.5
+// @version      1.5.1
 // @match        https://www.gamerswithjobs.com/node/*
 // @grant        none
 // @author       Chris Doggett, Noah Manneschmidt
@@ -214,8 +214,8 @@ var style = document.createElement('style');
 style.innerHTML = '\
 .ignore-placeholder { font-weight: bold; } \
 div.ignore-placeholder { margin: 1em; } \
-.forum-post .footer .post-actions ul li.post-ignore a { \
-width: 16px; height: 16px; \
+.forum-post .meta-links .post-actions ul li.post-ignore a { \
+width: 16px; height: 13px; \
 background-position: center center; background-repeat: no-repeat; \
 background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABd0lEQVQ4jaWSMUtcURCFD2KRyjogsqu+OyOEEETenem2jP6FBUFR/4G7lQGbmCJYWKmgv2Wx2LC5M1Za2dkolnZi8yzeZnn70Bg2A7c7353DmQNMMAPJZlzD3iRsCQsNXGjwX/BAspk3hf3l+YbH0LbIXYuh4zG0U559ehdOedYyoQtXLl59b8H7wJRFOqyIL5OEXRf2OpxyXnXhn/vA1OgDEz535cKETk34/tcXmgUAX6GlKuwaxIWPSi2fl7aVdoaiAwBw4WdfWfhcD8yU1kzosdTQgSsXSWkHLnzjwnc9YBoATPnKlR5M6LoKu9KTKV8BQA+YNuF7F74ZOTCl7wCQJGxWbf+By41hY+jghysXHmm7lgGfVG2nnFdd6cmFn134W6/Z/GBCp8OFZ+NXUD4eT7v50YTWLfLW75h9tRg6rnzryoVFOhy7Qj2w0eZaD0zoIuVZ6916pnxxrmxi6FjkrsfQ7i/PN15t3z91+2/jGvYmhgG8AGJ1AV5Z7OaYAAAAAElFTkSuQmCC\'); \
 }';
@@ -244,7 +244,7 @@ function goTime() {
 	forEach(ignoreList.members, hideUserContent);
 
 	// add ignore buttons to all posts
-	forEach($$('.forum-post .footer .post-actions ul'), addIgnoreLink);
+	forEach($$('.forum-post .meta-links .post-actions ul'), addIgnoreLink);
 }
 
 if (document.readyState === 'loading') {
