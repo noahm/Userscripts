@@ -8,6 +8,7 @@
 // @grant        none
 // @run-at       document-end
 // @author       Noah Manneschmidt
+// @updateURL    https://github.com/noahm/Userscripts/raw/master/gwj/GWJthreadignore.user.js
 // ==/UserScript==
 
 /**
