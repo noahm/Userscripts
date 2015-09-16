@@ -2,9 +2,11 @@
 // @namespace    gamerswithjobs
 // @name         GWJ Thread Ignore
 // @description  Allows you to ignore individual threads
-// @version      1.1
+// @version      1.1.1
 // @match        https://www.gamerswithjobs.com/tracker*
 // @match        https://www.gamerswithjobs.com/forum/*
+// @match        https://www.gamerswithjobs.com/user/*/track
+// @match        https://www.gamerswithjobs.com/user/*/favorites
 // @grant        none
 // @run-at       document-end
 // @author       Noah Manneschmidt
