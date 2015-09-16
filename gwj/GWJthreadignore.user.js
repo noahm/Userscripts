@@ -2,7 +2,7 @@
 // @namespace    gamerswithjobs
 // @name         GWJ Thread Ignore
 // @description  Allows you to ignore individual threads
-// @version      1.0
+// @version      1.1
 // @match        https://www.gamerswithjobs.com/tracker*
 // @match        https://www.gamerswithjobs.com/forum/*
 // @grant        none
@@ -93,7 +93,7 @@ function forEach(lst, cb) {
 }
 
 function idFromTableRow(row) {
-	return $('.topic > a', row).href.match(/\/node\/(\d+)$/)[1];
+	return $('.topic .topic-title a', row).href.match(/\/node\/(\d+)$/)[1];
 }
 
 function toggleThreadIgnore() {
@@ -101,18 +101,33 @@ function toggleThreadIgnore() {
 	var id = idFromTableRow(row);
 	if (ignoreList.contains(id)) {
 		ignoreList.remove(id);
-		this.textContent = 'ignore';
+		this.textContent = 'ignore this thread';
 		row.classList.remove('ignored');
 	} else {
 		ignoreList.add(id);
-		this.textContent = 'unignore';
+		this.textContent = 'unignore this thread';
 		row.classList.add('ignored');
 	}
 }
 
 // add styles to the document
 var style = document.createElement('style');
-style.textContent = '.ignored { opacity: 0.2; } .ignored, .threadMute { display: none; } .showMuteControls .ignored { display: table-row; } .showMuteControls .threadMute { display: inline; }';
+style.textContent = '\
+.ignored { opacity: 0.2; } \
+.ignored, .threadMute { display: none; } \
+.showMuteControls .ignored { display: table-row; } \
+.showMuteControls .threadMute { display: inline; }\
+#header .region-header #block-wc-core-user ul li.nav-top.user-threadignore { \
+  width: 16px; height: 13px; \
+  background-position: center center; background-repeat: no-repeat; \
+  background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABd0lEQVQ4jaWSMUtcURCFD2KRyjogsqu+OyOEEETenem2jP6FBUFR/4G7lQGbmCJYWKmgv2Wx2LC5M1Za2dkolnZi8yzeZnn70Bg2A7c7353DmQNMMAPJZlzD3iRsCQsNXGjwX/BAspk3hf3l+YbH0LbIXYuh4zG0U559ehdOedYyoQtXLl59b8H7wJRFOqyIL5OEXRf2OpxyXnXhn/vA1OgDEz535cKETk34/tcXmgUAX6GlKuwaxIWPSi2fl7aVdoaiAwBw4WdfWfhcD8yU1kzosdTQgSsXSWkHLnzjwnc9YBoATPnKlR5M6LoKu9KTKV8BQA+YNuF7F74ZOTCl7wCQJGxWbf+By41hY+jghysXHmm7lgGfVG2nnFdd6cmFn134W6/Z/GBCp8OFZ+NXUD4eT7v50YTWLfLW75h9tRg6rnzryoVFOhy7Qj2w0eZaD0zoIuVZ6916pnxxrmxi6FjkrsfQ7i/PN15t3z91+2/jGvYmhgG8AGJ1AV5Z7OaYAAAAAElFTkSuQmCC\'); \
+}\
+#header .region-header #block-wc-core-user ul li.nav-top.user-threadignore a { \
+  display: block; \
+  font-size: 0; \
+  margin: 0 auto; \
+} \
+';
 $('head').appendChild(style);
 
 var ignoreTemplate = document.createElement('span');
@@ -120,25 +135,27 @@ ignoreTemplate.classList.add('threadMute')
 ignoreTemplate.innerHTML = ' <a href="javascript:void(0);"></a>'
 
 // loop over every displayed thread attaching controls and classes
-forEach($$('tbody tr', $('#tracker, #forum')), function(row) {
+forEach($$('table.forum-topic-list tbody tr'), function(row) {
 	var id = idFromTableRow(row);
 	var ignoreItem = ignoreTemplate.cloneNode(true);
 	var link = $('a', ignoreItem);
 	link.addEventListener('click', toggleThreadIgnore);
 	if (ignoreList.contains(id)) {
 		row.classList.add('ignored');
-		link.textContent = 'unignore';
+		link.textContent = 'unignore this thread';
 	} else {
-		link.textContent = 'ignore';
+		link.textContent = 'ignore this thread';
 	}
 	$('.topic', row).appendChild(ignoreItem);
 });
 
 // add control for thread ignore at top of page
 var item = document.createElement('li');
-item.innerHTML = '<a href="javascript:void(0);">Thread ignore controls</a>';
+item.classList.add('nav-top', 'user-threadignore', 'first');
+item.innerHTML = '<a href="javascript:void(0);" title="Toggle thread ignore controls">Ignore Threads</a>';
 $('a', item).addEventListener('click', function() {
-	$('body').classList.add('showMuteControls');
+	$('body').classList.toggle('showMuteControls');
 });
-var userNav = $('#user-navigation ul');
+var userNav = $('#block-wc-core-user ul[role=navigation]');
+userNav.firstChild.classList.remove('first');
 userNav.insertBefore(item, userNav.firstChild);
