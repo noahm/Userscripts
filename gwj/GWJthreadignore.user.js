@@ -2,7 +2,7 @@
 // @namespace    gamerswithjobs
 // @name         GWJ Thread Ignore
 // @description  Allows you to ignore individual threads
-// @version      1.1.1
+// @version      1.1.2
 // @match        https://www.gamerswithjobs.com/tracker*
 // @match        https://www.gamerswithjobs.com/forum/*
 // @match        https://www.gamerswithjobs.com/user/*/track
@@ -121,7 +121,8 @@ style.textContent = '\
 .showMuteControls .ignored { display: table-row; } \
 .showMuteControls .threadMute { display: inline; }\
 #header .region-header #block-wc-core-user ul li.nav-top.user-threadignore { \
-  width: 16px; height: 13px; \
+  width: 16px; height: 16px; \
+  padding: 0; margin-top: 17px; \
   background-position: center center; background-repeat: no-repeat; \
   background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABd0lEQVQ4jaWSMUtcURCFD2KRyjogsqu+OyOEEETenem2jP6FBUFR/4G7lQGbmCJYWKmgv2Wx2LC5M1Za2dkolnZi8yzeZnn70Bg2A7c7353DmQNMMAPJZlzD3iRsCQsNXGjwX/BAspk3hf3l+YbH0LbIXYuh4zG0U559ehdOedYyoQtXLl59b8H7wJRFOqyIL5OEXRf2OpxyXnXhn/vA1OgDEz535cKETk34/tcXmgUAX6GlKuwaxIWPSi2fl7aVdoaiAwBw4WdfWfhcD8yU1kzosdTQgSsXSWkHLnzjwnc9YBoATPnKlR5M6LoKu9KTKV8BQA+YNuF7F74ZOTCl7wCQJGxWbf+By41hY+jghysXHmm7lgGfVG2nnFdd6cmFn134W6/Z/GBCp8OFZ+NXUD4eT7v50YTWLfLW75h9tRg6rnzryoVFOhy7Qj2w0eZaD0zoIuVZ6916pnxxrmxi6FjkrsfQ7i/PN15t3z91+2/jGvYmhgG8AGJ1AV5Z7OaYAAAAAElFTkSuQmCC\'); \
 }\
