@@ -11,7 +11,7 @@ All tested and working with the new site design:
 * `GWJUserRename.user.js` - Make a user on the forums appear to have a different username, just for fun.
 * `GWJignore.user.js` - Put users on your ignore list to keep their posts from displaying
 * `disableEditorShortcuts.user.js` - Disable the keyboard shortcuts in the post composition box to avoid the bugs that sometimes insert tags while typing
-* `GWJthreadignore.user.js` - Put a thread on your ignore list to keep it appearing in topic lists
+* `GWJthreadignore.user.js` - Put a thread on your ignore list to keep it from appearing in topic lists
 
 Not yet updated for the new site design:
 
