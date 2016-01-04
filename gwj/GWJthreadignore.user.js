@@ -5,8 +5,8 @@
 // @version      1.1.2
 // @match        https://www.gamerswithjobs.com/tracker*
 // @match        https://www.gamerswithjobs.com/forum/*
-// @match        https://www.gamerswithjobs.com/user/*/track
-// @match        https://www.gamerswithjobs.com/user/*/favorites
+// @match        https://www.gamerswithjobs.com/user/*/track*
+// @match        https://www.gamerswithjobs.com/user/*/favorites*
 // @grant        none
 // @run-at       document-end
 // @author       Noah Manneschmidt
