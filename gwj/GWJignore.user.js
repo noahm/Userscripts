@@ -2,8 +2,8 @@
 // @namespace    gamerswithjobs
 // @name         I Didn't Hear Anything
 // @description  Increases the number of potential Tannhauserings
-// @version      1.5.1
-// @match        https://www.gamerswithjobs.com/node/*
+// @version      1.6.0
+// @match        https://www.gamerswithjobs.com/*
 // @grant        none
 // @author       Chris Doggett, Noah Manneschmidt
 // @updateURL    https://github.com/noahm/Userscripts/raw/master/gwj/GWJignore.user.js
@@ -11,7 +11,11 @@
 
 /**
  * Usage:
- * Adds an ignore or unignore link at the bottom of every post. Click to add/remove the post's author to your ignore list.
+ * Adds an ignore or unignore link at the bottom of every post.
+ * Click to add/remove the post's author to your ignore list.
+ * 
+ * The database of ignored users may be shared between browsers with the import/export
+ * link added to the user hover menu. (Hover your avatar in the top right.)
  */
 (function(){
 
@@ -23,6 +27,20 @@ var store = {
 	},
 	get: function(key, def) {
 		return store.deserialize(window.localStorage.getItem(key), def);
+	},
+	setRaw: function(key, val) {
+		try {
+			var nativeVal = store.deserialize(val, null);
+			if (nativeVal) {
+				window.localStorage.setItem(key, val);
+				return nativeVal;
+			}
+		} catch (e) {
+		}
+		return null;
+	},
+	getRaw: function(key, def) {
+		return window.localStorage.getItem(key) || def;
 	},
 	serialize: function(value) {
 		return JSON.stringify(value);
@@ -68,8 +86,31 @@ var ignoreList = {
 		ignoreList.members = ignoreList.members.filter(function(e){return e !== username});
 		ignoreList.vaporize = ignoreList.vaporize.filter(function(e){return e !== username});
 		store.set(ignoreList.storeKey, ignoreList.members);
-		store.set(ignoreList.evaporateKey, ignoreList.vaporize);
-	}
+		store.set(ignoreList.vaporizeKey, ignoreList.vaporize);
+	},
+	getRaw: function() {
+		return JSON.stringify({
+			members: ignoreList.members,
+			vaporize: ignoreList.vaporize,
+		});
+	},
+	setRaw: function(str) {
+		try {
+			var data = JSON.parse(str);
+			if (!data) {
+				return;
+			}
+			if (data.members) {
+				ignoreList.members = data.members;
+				store.set(ignoreList.storeKey, ignoreList.members);
+			}
+			if (data.vaporize) {
+				ignoreList.vaporize = data.vaporize;
+				store.set(ignoreList.vaporizeKey, ignoreList.vaporize);
+			}
+		} catch (e) {
+		}
+	},
 };
 
 // from https://developer.mozilla.org/en-US/docs/Code_snippets/QuerySelector
@@ -234,17 +275,67 @@ function addIgnoreLink(el) {
 	}
 }
 
+// insert user scripts menu column, if necessary
+function getOrCreateScriptsMenu() {
+	var userMenu = $('#wc-header-user-dropdown-content');
+	var scriptsMenu = $('#noahm-scripts-menu');
+	if (userMenu && !scriptsMenu) {
+		var div = document.createElement('div');
+		div.classList.add('block', 'block-wc-header');
+		div.innerHTML = '<h2>Your scripts</h2><div class="content"><div class="item-list"><ul id="noahm-scripts-menu"></ul></div></div>';
+		userMenu.appendChild(div);
+	}
+	return scriptsMenu || $('#noahm-scripts-menu');
+}
+
+function addImportExportMenu() {
+	var scriptsMenu = getOrCreateScriptsMenu();
+	var threadIgnoreMenuItem = document.createElement('li');
+	var linkTemplate = document.createElement('a');
+	linkTemplate.href = '#';
+
+	var importExportLink = linkTemplate.cloneNode(true);
+	importExportLink.innerHTML = 'Import/Export';
+	importExportLink.addEventListener('click', function(e) {
+		e.preventDefault();
+		var response = window.prompt(
+			'Here is the current database of ignored posters. You may paste in a different one to restore from a backup.',
+			ignoreList.getRaw()
+		);
+
+		switch (response) {
+			case null:
+				return;
+
+			case "":
+				response = '{"members":[],"vaporize":[]}';
+
+			default:
+				ignoreList.setRaw(response);
+		}
+	});
+
+	threadIgnoreMenuItem.appendChild(document.createTextNode('User Ignore '));
+	threadIgnoreMenuItem.appendChild(importExportLink);
+	scriptsMenu.appendChild(threadIgnoreMenuItem);
+}
+
+
 function goTime() {
 	ignoreList.init();
+	addImportExportMenu();
 
-	// add our stylesheet
-	$('head').appendChild(style);
+	// https://www.gamerswithjobs.com/node/*
+	if (window.location.pathname.match(/^\/node\//)) {
+		// add our stylesheet
+		$('head').appendChild(style);
 
-	// loop over all currently ignored users
-	forEach(ignoreList.members, hideUserContent);
+		// loop over all currently ignored users
+		forEach(ignoreList.members, hideUserContent);
 
-	// add ignore buttons to all posts
-	forEach($$('.forum-post .meta-links .post-actions ul'), addIgnoreLink);
+		// add ignore buttons to all posts
+		forEach($$('.forum-post .meta-links .post-actions ul'), addIgnoreLink);
+	}
 }
 
 if (document.readyState === 'loading') {

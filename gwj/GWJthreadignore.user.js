@@ -2,11 +2,8 @@
 // @namespace    gamerswithjobs
 // @name         GWJ Thread Ignore
 // @description  Allows you to ignore individual threads
-// @version      1.1.2
-// @match        https://www.gamerswithjobs.com/tracker*
-// @match        https://www.gamerswithjobs.com/forum/*
-// @match        https://www.gamerswithjobs.com/user/*/track*
-// @match        https://www.gamerswithjobs.com/user/*/favorites*
+// @version      1.2.0
+// @match        https://www.gamerswithjobs.com/*
 // @grant        none
 // @run-at       document-end
 // @author       Noah Manneschmidt
@@ -18,8 +15,11 @@
  * Adds a link in the top left on any tracker or fourm page to show ignore controls.
  * When ignore controls are shown, an ignore link will appear next to any thread, and
  * currently ignored threads will appear with an unignore link.
- * The listing of favorite threads is not affected.
+ * 
+ * The list of ignored threads may be shared between browsers with the import/export
+ * link added to the user hover menu. (Hover your avatar in the top right.)
  */
+(function(){
 
 // quick 'n dirty localStorage wrapper with JSON serialization
 var store = {
@@ -28,6 +28,20 @@ var store = {
 	},
 	get: function(key, def) {
 		return store.deserialize(window.localStorage.getItem(key), def);
+	},
+	setRaw: function(key, val) {
+		try {
+			var nativeVal = store.deserialize(val, null);
+			if (nativeVal) {
+				window.localStorage.setItem(key, val);
+				return nativeVal;
+			}
+		} catch (e) {
+		}
+		return null;
+	},
+	getRaw: function(key, def) {
+		return window.localStorage.getItem(key) || def;
 	},
 	serialize: function(value) {
 		return JSON.stringify(value);
@@ -56,7 +70,13 @@ var ignoreList = {
 	remove: function(id) {
 		ignoreList.members = ignoreList.members.filter(function(e){return e !== id});
 		store.set(ignoreList.storeKey, ignoreList.members);
-	}
+	},
+	getRaw: function() {
+		return store.getRaw(ignoreList.storeKey, []);
+	},
+	setRaw: function(str) {
+		ignoreList.members = store.setRaw(ignoreList.storeKey, str) || ignoreList.members;
+	},
 };
 ignoreList.members = store.get(ignoreList.storeKey, []);
 
@@ -99,7 +119,8 @@ function idFromTableRow(row) {
 	return $('.topic .topic-title a', row).href.match(/\/node\/(\d+)$/)[1];
 }
 
-function toggleThreadIgnore() {
+function toggleThreadIgnore(e) {
+	e.preventDefault();
 	var row = this.parentElement.parentElement.parentElement;
 	var id = idFromTableRow(row);
 	if (ignoreList.contains(id)) {
@@ -136,7 +157,7 @@ $('head').appendChild(style);
 
 var ignoreTemplate = document.createElement('span');
 ignoreTemplate.classList.add('threadMute')
-ignoreTemplate.innerHTML = ' <a href="javascript:void(0);"></a>'
+ignoreTemplate.innerHTML = ' <a href="#"></a>'
 
 // loop over every displayed thread attaching controls and classes
 forEach($$('table.forum-topic-list tbody tr'), function(row) {
@@ -154,12 +175,75 @@ forEach($$('table.forum-topic-list tbody tr'), function(row) {
 });
 
 // add control for thread ignore at top of page
-var item = document.createElement('li');
-item.classList.add('nav-top', 'user-threadignore', 'first');
-item.innerHTML = '<a href="javascript:void(0);" title="Toggle thread ignore controls">Ignore Threads</a>';
-$('a', item).addEventListener('click', function() {
-	$('body').classList.toggle('showMuteControls');
-});
-var userNav = $('#block-wc-core-user ul[role=navigation]');
-userNav.firstChild.classList.remove('first');
-userNav.insertBefore(item, userNav.firstChild);
+function addThreadIgnoreControl() {
+	var item = document.createElement('li');
+	item.classList.add('nav-top', 'user-threadignore', 'first');
+	item.innerHTML = '<a href="#" title="Toggle thread ignore controls">Ignore Threads</a>';
+	$('a', item).addEventListener('click', function(e) {
+		e.preventDefault();
+		$('body').classList.toggle('showMuteControls');
+	});
+	var userNav = $('#block-wc-core-user ul[role=navigation]');
+	if (!userNav) {
+		return;
+	}
+	userNav.firstChild.classList.remove('first');
+	userNav.insertBefore(item, userNav.firstChild);
+}
+// https://www.gamerswithjobs.com/tracker*
+// https://www.gamerswithjobs.com/forum/*
+// https://www.gamerswithjobs.com/user/*/track*
+// https://www.gamerswithjobs.com/user/*/favorites*
+if (window.location.pathname.match(/^\/(tracker|forum\/|user\/.+\/(track|favorites))/)) {
+	addThreadIgnoreControl();
+}
+
+
+// insert user scripts menu column, if necessary
+function getOrCreateScriptsMenu() {
+	var userMenu = $('#wc-header-user-dropdown-content');
+	var scriptsMenu = $('#noahm-scripts-menu');
+	if (userMenu && !scriptsMenu) {
+		var div = document.createElement('div');
+		div.classList.add('block', 'block-wc-header');
+		div.innerHTML = '<h2>Your scripts</h2><div class="content"><div class="item-list"><ul id="noahm-scripts-menu"></ul></div></div>';
+		userMenu.appendChild(div);
+	}
+	return scriptsMenu || $('#noahm-scripts-menu');
+}
+
+function addImportExportMenu() {
+	var scriptsMenu = getOrCreateScriptsMenu();
+	var threadIgnoreMenuItem = document.createElement('li');
+	var linkTemplate = document.createElement('a');
+	linkTemplate.href = '#';
+
+	var importExportLink = linkTemplate.cloneNode(true);
+	importExportLink.innerHTML = 'Import/Export';
+	importExportLink.addEventListener('click', function(e) {
+		e.preventDefault();
+		var response = window.prompt(
+			'Here is the current database of ignored threads. You may paste in a different one to restore from a backup.',
+			ignoreList.getRaw()
+		);
+
+		switch (response) {
+			case null:
+				return;
+
+			case "":
+				response = "[]";
+
+			default:
+				ignoreList.setRaw(response);
+		}
+	});
+
+	threadIgnoreMenuItem.appendChild(document.createTextNode('Thread Ignore '));
+	threadIgnoreMenuItem.appendChild(importExportLink);
+	scriptsMenu.appendChild(threadIgnoreMenuItem);
+}
+
+addImportExportMenu();
+
+})();
