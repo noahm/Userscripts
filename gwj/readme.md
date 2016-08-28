@@ -13,9 +13,9 @@ All tested and working with the new site design:
 * `disableEditorShortcuts.user.js` - Disable the keyboard shortcuts in the post composition box to avoid the bugs that sometimes insert tags while typing
 * `GWJthreadignore.user.js` - Put a thread on your ignore list to keep it from appearing in topic lists
 
-Not yet updated for the new site design:
+No longer updated:
 
-* `GWJhidepnc.user.js` - Hide all P&C threads (partially functional, might not be updatable)
+* `GWJhidepnc.user.js` - Hide all P&C threads (not feasible with the new site design)
 
 ## Installation
 
