@@ -12,6 +12,7 @@ All tested and working with the new site design:
 * `GWJignore.user.js` - Put users on your ignore list to keep their posts from displaying
 * `disableEditorShortcuts.user.js` - Disable the keyboard shortcuts in the post composition box to avoid the bugs that sometimes insert tags while typing
 * `GWJthreadignore.user.js` - Put a thread on your ignore list to keep it from appearing in topic lists
+* `GWJtoggleSpoilers.user.js` - Adds an extra button to the top of each thread page to toggle all spoiler tags on that page
 
 No longer updated:
 
