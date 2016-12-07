@@ -24,9 +24,9 @@
 		var child, next;
 
 		switch ( node.nodeType ) {
-			case 1:  // Element
-			case 9:  // Document
-			case 11: // Document fragment
+			case Node.ELEMENT_NODE:
+			case Node.DOCUMENT_NODE:
+			case Node.DOCUMENT_FRAGMENT_NODE:
 				child = node.firstChild;
 				while ( child ) {
 					next = child.nextSibling;
@@ -35,7 +35,7 @@
 				}
 				break;
 
-			case 3: // Text node
+			case Node.TEXT_NODE:
 				handleText(node);
 				break;
 		}
