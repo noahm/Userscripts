@@ -13,6 +13,7 @@ All tested and working with the new site design:
 * `disableEditorShortcuts.user.js` - Disable the keyboard shortcuts in the post composition box to avoid the bugs that sometimes insert tags while typing
 * `GWJthreadignore.user.js` - Put a thread on your ignore list to keep it from appearing in topic lists
 * `GWJtoggleSpoilers.user.js` - Adds an extra button to the top of each thread page to toggle all spoiler tags on that page
+* `GWJembedGifv.user.js` - Upgrades the IMAGE() bbcode output to support gifv files from imgur
 
 No longer updated:
 
