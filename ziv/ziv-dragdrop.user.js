@@ -59,5 +59,11 @@
     } catch (e) {
       console.log(e);
     }
+
+    document.querySelector('select[name="mp3quality"]').value =
+      "Perfect (High Quality)";
+    document.querySelector('select[name="backgroundquality"]').value =
+      "Generic";
+    document.querySelector('input[name="autozip"]').checked = true;
   });
 })();
