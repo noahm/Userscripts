@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Ziv Upload DragDrop
+// @name         ZIv Simfile Upload Helper
 // @namespace    http://noah.manneschmidt.net/
-// @version      2025-01-07_12-00
-// @description  lets you drop a pack directly onto the ziv upload form to autofill some fields
+// @version      2025-01-07_12-30
+// @description  autofills some fields on the ZIv upload form when adding your sm/ssc file
 // @author       Noah Manneschmidt
 // @match        https://zenius-i-vanisher.com/v5.2/uploadsimfile.php?*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=zenius-i-vanisher.com
@@ -17,33 +17,6 @@
     "https://unpkg.com/simfile-parser@0.8.1/dist/browser/index.js"
   );
   const parseSong = parser.parseSongFolderOrData;
-
-  document.body.addEventListener("dragover", (evt) => {
-    evt.preventDefault();
-  });
-
-  document.body.addEventListener("drop", async (evt) => {
-    console.log("handle drop");
-    evt.preventDefault();
-    if (!evt.dataTransfer) {
-      return;
-    }
-
-    if (evt.dataTransfer.items.length !== 1) {
-      console.error("too many items dropped");
-      return;
-    }
-    try {
-      const simfile = await parseSong(evt.dataTransfer.items[0]);
-      if (!simfile) {
-        console.log("no simfile found");
-        return;
-      }
-      autofillSimfile(simfile);
-    } catch (e) {
-      console.log(e);
-    }
-  });
 
   document
     .querySelector('input[name="DWIfile"]')
