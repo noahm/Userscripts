@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Ziv Upload DragDrop
 // @namespace    http://noah.manneschmidt.net/
-// @version      2025-01-07.2
+// @version      2025-01-07_12-00
 // @description  lets you drop a pack directly onto the ziv upload form to autofill some fields
 // @author       Noah Manneschmidt
 // @match        https://zenius-i-vanisher.com/v5.2/uploadsimfile.php?*
