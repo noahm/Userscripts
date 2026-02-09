@@ -45,10 +45,9 @@ function autofillSimfile(simfile) {
     simfile.title.translitTitleName || simfile.title.titleName;
   document.querySelector("input[name='simfileartist']").value = simfile.artist;
   // max min bpm
-  if (simfile.minBpm=simfile.maxBpm) {
+  if (simfile.minBpm==simfile.maxBpm) {
       document.querySelector("input[name='minbpm']").value = -1;
-  }
-  else {
+  } else {
       document.querySelector("input[name='minbpm']").value = simfile.minBpm;
   }
   document.querySelector("input[name='maxbpm']").value = simfile.maxBpm;
