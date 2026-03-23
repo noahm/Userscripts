@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZIv Simfile Upload Helper
 // @namespace    http://noah.manneschmidt.net/
-// @version      2025-01-07_12-30
+// @version      2026-03-23_11-00
 // @description  autofills some fields on the ZIv upload form when adding your sm/ssc file
 // @author       Noah Manneschmidt
 // @match        https://zenius-i-vanisher.com/v5.2/uploadsimfile.php?*
@@ -13,9 +13,8 @@
 
 (async function () {
   "use strict";
-  const parser = await import(
-    "https://unpkg.com/simfile-parser@0.8.1/dist/browser/index.js"
-  );
+  const parser =
+    await import("https://unpkg.com/simfile-parser@0.8.1/dist/browser/index.js");
   const parseSong = parser.parseSongFolderOrData;
 
   document
@@ -45,10 +44,10 @@ function autofillSimfile(simfile) {
     simfile.title.translitTitleName || simfile.title.titleName;
   document.querySelector("input[name='simfileartist']").value = simfile.artist;
   // max min bpm
-  if (simfile.minBpm==simfile.maxBpm) {
-      document.querySelector("input[name='minbpm']").value = -1;
+  if (simfile.minBpm == simfile.maxBpm) {
+    document.querySelector("input[name='minbpm']").value = -1;
   } else {
-      document.querySelector("input[name='minbpm']").value = simfile.minBpm;
+    document.querySelector("input[name='minbpm']").value = simfile.minBpm;
   }
   document.querySelector("input[name='maxbpm']").value = simfile.maxBpm;
   // charts
