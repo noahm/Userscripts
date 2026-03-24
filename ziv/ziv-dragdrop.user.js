@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZIv Simfile Upload Helper
 // @namespace    http://noah.manneschmidt.net/
-// @version      2026-03-23_11-00
+// @version      2026-03-24_09-30
 // @description  autofills some fields on the ZIv upload form when adding your sm/ssc file
 // @author       Noah Manneschmidt
 // @match        https://zenius-i-vanisher.com/v5.2/uploadsimfile.php?*
@@ -44,12 +44,9 @@ function autofillSimfile(simfile) {
     simfile.title.translitTitleName || simfile.title.titleName;
   document.querySelector("input[name='simfileartist']").value = simfile.artist;
   // max min bpm
-  if (simfile.minBpm == simfile.maxBpm) {
-    document.querySelector("input[name='minbpm']").value = -1;
-  } else {
-    document.querySelector("input[name='minbpm']").value = simfile.minBpm;
-  }
-  document.querySelector("input[name='maxbpm']").value = simfile.maxBpm;
+  const { minBpm, maxBpm } = getMinMaxBpm(simfile);
+  document.querySelector("input[name='minbpm']").value = minBpm;
+  document.querySelector("input[name='maxbpm']").value = maxBpm;
   // charts
   for (const chart of simfile.availableTypes) {
     try {
@@ -65,4 +62,23 @@ function autofillSimfile(simfile) {
     "Perfect (High Quality)";
   document.querySelector('select[name="backgroundquality"]').value = "Generic";
   document.querySelector('input[name="autozip"]').checked = true;
+}
+
+function getMinMaxBpm(simfile) {
+  let minBpm, maxBpm;
+  if (simfile.displayBpm && simfile.displayBpm !== "NaN") {
+    // initial values from displayBpm if it is usable
+    [minBpm, maxBpm] = simfile.displayBpm.split("-");
+    if (!maxBpm) {
+      maxBpm = minBpm;
+    }
+  } else {
+    // otherwise use values from real bpms
+    minBpm = simfile.minBpm;
+    maxBpm = simfile.maxBpm;
+  }
+  if (minBpm == maxBpm) {
+    minBpm = -1;
+  }
+  return { minBpm, maxBpm };
 }
